@@ -24,3 +24,4 @@ Using Google's Cloud Storage in union with Google Big Query.
 
 ## **Data Model of Database**
 Our Data Model is shown above:
+![main_db](main_db.PNG "Main Model")
