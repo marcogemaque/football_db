@@ -14,3 +14,12 @@ A pipeline built to scrape Brazil and Argentina league's results and stats and s
 
 # **Architechture and System Design**
 ## **Why we chose Mage?**
+Easier to setup than Airflow. For the job I wanted, Mage was good enough.
+
+## **Scraping**
+Used BeautifulSoup4 (bs4) for this. No need for IP rotation as time between request was quite spaced. No need for extra safety precautions.
+
+## **Data Lake**
+Using Google's Cloud Storage, which is free for the amount of data we want, we only keep copies up to 3 days from the current day to not create overhead.
+
+##
