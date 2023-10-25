@@ -25,3 +25,6 @@ Using Google's Cloud Storage in union with Google Big Query.
 ## **Data Model of Database**
 Our Data Model is shown above:
 ![main_db](main_db.PNG "Main Model")
+The database is 3NF because all other tables are dependent on UUID, except for the aliases table, which has **team_name** as the FK for the table.
+
+## **Database Version Control - Liquibase**
