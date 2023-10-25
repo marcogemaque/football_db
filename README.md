@@ -1,6 +1,8 @@
 # **football_db**
 A pipeline built to scrape Brazil and Argentina league's results and stats and serve them into a dashboard.
 
+![logo](logo.jfif "Logo")
+
 # **Summary**
 - Mage.ai orchestrated
 - Scrapes **Transfermarkt** daily
