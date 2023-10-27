@@ -7,9 +7,9 @@ name = "pypi"
 beautifulsoup4 = "*"
 pandas = "*"
 requests = "*"
+mage-ai = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
 
 [dev-packages]
 ipykernel = "*"
-
-[requires]
-python_version = "3.11"

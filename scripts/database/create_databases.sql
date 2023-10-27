@@ -1,29 +1,29 @@
-create table [if not exists] team_keys (
+create table if not exists team_keys (
 	uuid varchar(36) primary key,
-	team_name text(200) not null,
-	country text(200) not null,
+	team_name varchar(200) not null,
+	country varchar(200) not null,
 	created_on TIMESTAMP not null,
 	created_by TIMESTAMP not null
 )
 
-create table [if not exists] teams_aliases (
+create table if not exists teams_aliases (
 	uuid varchar(36) not null,
-	alias text(200),
-	created_on TIMESTAMP not null,
-	created_by TIMESTAMP not null,
+	alias varchar(200),
+	primary key (uuid),
 	foreign key (uuid)
 		references team_keys (uuid)
-)
+);
 
-create table [if not exists] url_to_scrape (
+create table if not exists url_to_scrape (
 	uuid varchar(36) not null,
-	url text(9999),
-	type_of_url varchar(99)
+	url text,
+	type_of_url varchar(99),
+	primary key (uuid),
 	foreign key (uuid)
 		references team_keys (uuid)
-)
+);
 
-create table [if not exists] player_stats (
+create table if not exists player_stats (
 	uuid varchar(36) not null,
 	player_number varchar(100),
 	player_position varchar(50) not null,
@@ -37,15 +37,17 @@ create table [if not exists] player_stats (
 	subbed_in int not null,
 	subbed_out int not null,
 	points_per_game numeric(3,2) not null,
-	minutes played numeric(5) not null,
+	minutes_played numeric(6,1),
 	player_name varchar(50),
+	primary key (uuid),
 	foreign key (uuid)
 		references team_keys (uuid)
-)
+);
 
 create table [if not exists] team_value (
 	uuid varchar(36) not null,
 	value numeric(6) not null,
+	primary key (uuid)
 	foreign key (uuid)
 		references team_keys (uuid)
 )
