@@ -44,10 +44,24 @@ create table if not exists player_stats (
 		references team_keys (uuid)
 );
 
-create table [if not exists] team_value (
+create table if not exists team_value (
 	uuid varchar(36) not null,
 	value numeric(6) not null,
 	primary key (uuid)
 	foreign key (uuid)
 		references team_keys (uuid)
+)
+
+--downside is we duplicate matches, upside is query is easier
+create table if not exists matches_played (
+	match_id serial primary key, --the sequential id
+	team_uuid varchar(36) not null, --team we're referring as main
+	opp_uuid varchar(36), --team played against
+	goals_scored int, --goals for the main team
+	goals_against int, --goals against the team
+	match_day int,
+	match_month int,
+	match_year int,
+	ground_neutrality  varchar(7), --home, away or neutral,
+	competition varchar(36) --national league, cup, libertadores, etc
 )

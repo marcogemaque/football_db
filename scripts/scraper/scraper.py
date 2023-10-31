@@ -84,7 +84,7 @@ def get_the_fixture_and_results(headers, URL):
             df["match_time"] = df["match_time"].apply(lambda x: None if re.search("([0-9][0-9]|[0-9]):[0-9][0-9](P|A)M", x) is not None else x)
             df["match_time"] = df["match_time"].fillna("")
             #now extract the match's score
-            df["match_score"] = df["match_time"].apply(lambda x: re.search("[0-9]|:[0-9]", x))
+            df["match_score"] = df["match_time"].apply(lambda x: re.search("[0-9]:[0-9]", x))
             df["match_score"] = df["match_score"].apply(lambda x: x.group() if x != None else None)
             #reset the index
             df = df.reset_index()
@@ -116,7 +116,7 @@ def get_the_fixture_and_results(headers, URL):
                 #get the goals scored by the away team
                 df["goals_away"] = df["match_score"].apply(lambda x: re.search("[0-9]$", x))
                 df["goals_away"] = df["goals_away"].apply(lambda x: x.group(0) if x != None else None)
-                #get the goals scored by the away team
+                #replace the empty parenthesis ahead of the team's names
                 df["home_team"] = df["home_team"].apply(lambda x: re.sub("\([^()]*\)","", x))
                 df["away_team"] = df["away_team"].apply(lambda x: re.sub("\([^()]*\)","", x))
                 all_results_cleaned = pd.concat([all_results_cleaned, df])

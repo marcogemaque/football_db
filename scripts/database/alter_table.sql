@@ -11,3 +11,7 @@ alter table teams_aliases
 		references team_keys (team_name)
 alter table teams_aliases 
 	alter column alias type text[] using array[alias]
+alter table team_keys
+	drop column created_by;
+alter table url_to_scrape 
+	rename column type_of_url to season;
