@@ -3,4 +3,4 @@ WORKDIR /football_db
 COPY . .
 RUN pip install pipenv
 RUN pipenv install
-CMD ["pipenv","run","python","scripts/app.py"]
+# CMD ["pipenv","run","python","scripts/app.py"]

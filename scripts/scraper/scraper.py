@@ -104,9 +104,9 @@ def get_the_fixture_and_results(headers, URL):
                 df["home_team"] = df["home_team"].ffill()
                 df["away_team"] = df["away_team"].ffill()
                 df["match_score"] = df["match_score"].ffill()
-                df["home_team"] = df["home_team"].backfill()
-                df["away_team"] = df["away_team"].backfill()
-                df["match_score"] = df["match_score"].backfill()
+                df["home_team"] = df["home_team"].bfill()
+                df["away_team"] = df["away_team"].bfill()
+                df["match_score"] = df["match_score"].bfill()
                 #drop match_time
                 df = df.drop("match_time", axis=1)
                 df = df.drop_duplicates(subset=["match_score","home_team","away_team"], keep='first')

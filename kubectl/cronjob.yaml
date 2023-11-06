@@ -4,7 +4,7 @@ kind: CronJob
 metadata:
   name: football-db
 spec:
-  schedule: "43 17 * * *"
+  schedule: "43 17 * * 1"
   concurrencyPolicy: Allow
   startingDeadlineSeconds: 100
   suspend: false
@@ -20,5 +20,7 @@ spec:
             args:
             - /bin/sh
             - -c
-            - date; pipenv run python ./scripts/app.py
+            - date;
+            - ls;
+            - pipenv run python ./scripts/app.py
           restartPolicy: OnFailure
