@@ -15,10 +15,13 @@ headers = requests.utils.default_headers()
 headers.update({
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
 })
+#define a variable TODAY to use throughout the code
+today = pd.to_datetime('today').strftime('%Y-%m-%d')
 #GET THE FIXTURES
+print("Scraping for FIXTURES.")
 fixtures = get_the_fixture_and_results(headers=headers, URL=URL)
+print(f"Succeeded.")
 #save this file
-FILENAME = f"football_db_{pd.to_datetime('today').strftime('YYYY-mm-dd')}"
-fixtures.to_csv(f"../data/output/{FILENAME}", index=False)
+FILENAME = f"football_db_{today}.csv"
 #and now save this file to storage
-save_file_to_storage(bucket_name='football_illy', blob_name=FILENAME)
+save_file_to_storage(bucket_name='football_llyn', file_path_to_upload=FILENAME, object_to_upload=fixtures)

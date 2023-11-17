@@ -20,7 +20,5 @@ spec:
             args:
             - /bin/sh
             - -c
-            - date;
-            - ls;
-            - pipenv run python ./scripts/app.py
+            - date; ls; pipenv run python ./scripts/app.py
           restartPolicy: OnFailure
