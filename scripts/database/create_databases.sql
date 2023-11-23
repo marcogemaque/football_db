@@ -1,9 +1,7 @@
-create table if not exists team_keys (
+create table if not exists football_dwh.team_keys (
 	uuid varchar(36) primary key,
 	team_name varchar(200) not null,
-	country varchar(200) not null,
-	created_on TIMESTAMP not null,
-	created_by TIMESTAMP not null
+	country varchar(200) not null
 )
 
 create table if not exists teams_aliases (

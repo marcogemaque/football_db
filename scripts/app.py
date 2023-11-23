@@ -1,12 +1,12 @@
 #internal libs
 from time import sleep
 import os
-import requests
 #our created libs
-from scraper.scraper import get_the_fixture_and_results
+from scraper.scraper import get_the_fixture_and_results, 
 from loader.to_cloud_storage import save_file_to_storage
 #third-party
 import pandas as pd
+import requests
 
 #common variables we will use
 URL = "https://www.transfermarkt.co.uk/copa-de-la-liga-profesional-de-futbol/gesamtspielplan/wettbewerb/CDLP/saison_id/2022"

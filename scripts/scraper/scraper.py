@@ -123,6 +123,8 @@ def get_the_fixture_and_results(headers, URL):
             #IF we DON'T have that column, it means we will not append this dataframe
             else:
                 continue
+    #ignore the rows that have home_team = 'nan'
+    all_results_cleaned = all_results_cleaned.loc[all_results_cleaned["home_team"]!="nan"]
     return all_results_cleaned
 
 def get_team_stats(headers, URL):
