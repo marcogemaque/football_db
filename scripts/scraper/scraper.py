@@ -3,41 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-def get_squad_overview(headers, URL):
-    #make the request
-    # URL = "https://www.transfermarkt.co.uk/superliga/startseite/wettbewerb/AR1N"
-    page = requests.get(URL, headers=headers)
-    #define the soup element to parse the result
-    soup = BeautifulSoup(page.content, "html.parser")
-    #find the IDs that we're looking for
-    results = soup.find(id="yw1", attrs={"class":"grid-view"})
-    class_for_table = "items",
-    results = results.find_all("table", class_=class_for_table)
-    full_table = [x.findChild("tbody") for x in results]
-    only_rows = [x.findChildren("td") for x in full_table][0]
-    extracted_values = [x.find("a").text if x.find("a") is not None else '' for x in only_rows]
-    filtered_values = [x for x in extracted_values if x != ""]
-    #now transform it into a dataframe
-    club_names = []
-    squad_size = []
-    squad_value = []
-    counter = 0
-    for row in filtered_values:
-        if counter >= 3:
-            counter = 0
-        if counter == 0:
-            club_names.append(row)
-        elif counter == 1:
-            squad_size.append(row)
-        else:
-            squad_value.append(row)
-        counter += 1
-    df = pd.DataFrame()
-    df["club"] = club_names
-    df["squad_size"] = squad_size
-    df["squad_value"] = squad_value
-    return df
-
 def get_the_fixture_and_results(headers, URL):
     #make the request
     # URL = "https://www.transfermarkt.co.uk/professional-football-league/gesamtspielplan/wettbewerb/AR1N/saison_id/2022"
