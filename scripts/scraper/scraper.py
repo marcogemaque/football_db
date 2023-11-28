@@ -1,4 +1,5 @@
 import re
+import time
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -142,4 +143,5 @@ def get_team_stats(headers, URL):
     squad_status["matches_played"] = pd.to_numeric(squad_status["matches_played"], errors="coerce")
     #fillna to 0
     squad_status["matches_played"] = squad_status["matches_played"].fillna(0)
+    time.sleep(0.5)
     return squad_status
