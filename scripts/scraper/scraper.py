@@ -91,6 +91,11 @@ def get_the_fixture_and_results(headers, URL):
                 continue
     #ignore the rows that have home_team = 'nan'
     all_results_cleaned = all_results_cleaned.loc[all_results_cleaned["home_team"]!="nan"]
+    #drop the column "match_score"
+    all_results_cleaned = all_results_cleaned.drop("match_score", axis=1)
+    #replace the character "'" with nothing
+    all_results_cleaned["home_team"] = all_results_cleaned["home_team"].str.replace("'","")
+    all_results_cleaned["away_team"] = all_results_cleaned["away_team"].str.replace("'","")
     return all_results_cleaned
 
 def get_team_stats(headers, URL):
@@ -139,9 +144,30 @@ def get_team_stats(headers, URL):
     squad_status["player_name_fix"] = squad_status["player_name_fix"].apply(lambda x: x.split(".")[0] if "." in x else x)
     squad_status["player_name_fix"] = squad_status["player_name_fix"].str.strip()
     squad_status = squad_status.drop("player_name", axis=1)
+    squad_status = squad_status.rename({"player_name_fix":"player_name"}, axis=1)
     #and for the non numeric data in matches_played, change it to 0
     squad_status["matches_played"] = pd.to_numeric(squad_status["matches_played"], errors="coerce")
     #fillna to 0
     squad_status["matches_played"] = squad_status["matches_played"].fillna(0)
+    #remove the "'" from minutes_played
+    squad_status["minutes_played"] = squad_status["minutes_played"].str.replace("'","",regex=True)
+    #numerically fix the values we received
+    columns_to_coerce = [
+        "age","matches_played","goals","assists","yellow_cards","double_yellows",
+        "red_cards","subbed_in","subbed_out","points_per_game","minutes_played"
+    ]
+    for col in columns_to_coerce:
+        squad_status[col] = pd.to_numeric(squad_status[col], errors='coerce', downcast="integer")
+        squad_status[col] = squad_status[col].fillna(0)
+    #specify the types of some columns
+    squad_status["matches_played"] = squad_status["matches_played"].astype(int)
+    squad_status["assists"] = squad_status["assists"].astype(int)
+    squad_status["goals"] = squad_status["goals"].astype(int)
+    squad_status["yellow_cards"] = squad_status["yellow_cards"].astype(int)
+    squad_status["double_yellows"] = squad_status["double_yellows"].astype(int)
+    squad_status["red_cards"] = squad_status["red_cards"].astype(int)
+    squad_status["subbed_in"] = squad_status["subbed_in"].astype(int)
+    squad_status["subbed_out"] = squad_status["subbed_out"].astype(int)
+    squad_status['minutes_played'] = squad_status['minutes_played'].astype(int)
     time.sleep(0.5)
     return squad_status

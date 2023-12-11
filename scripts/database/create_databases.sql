@@ -14,8 +14,8 @@ create table if not exists football_dwh.scrape_urls (
 );
 
 create table if not exists teams_aliases (
-	uuid varchar(36) not null,
-	alias varchar(200),
+	uuid varchar(36),
+	alias text[],
 	primary key (uuid),
 	foreign key (uuid)
 		references team_keys (uuid)
@@ -51,15 +51,15 @@ create table if not exists team_value (
 )
 
 --downside is we duplicate matches, upside is query is easier
-create table if not exists matches_played (
+create table if not exists fixture (
 	match_id serial primary key, --the sequential id
 	team_uuid varchar(36) not null, --team we're referring as main
-	opp_uuid varchar(36), --team played against
-	goals_scored int, --goals for the main team
-	goals_against int, --goals against the team
-	match_day int,
-	match_month int,
-	match_year int,
-	ground_neutrality  varchar(7), --home, away or neutral,
-	competition varchar(36) --national league, cup, libertadores, etc
+	opp_uuid varchar(36) not null, --team played against
+	goals_scored int not null, --goals for the main team
+	goals_against int not null, --goals against the team
+	match_day int not null,
+	match_month int not null,
+	match_year int not null,
+	competition varchar(36) not null, --national league, cup, libertadores, etc,
+	country_competition varchar(36) not null
 )
