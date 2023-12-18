@@ -96,6 +96,9 @@ def get_the_fixture_and_results(headers, URL):
     #replace the character "'" with nothing
     all_results_cleaned["home_team"] = all_results_cleaned["home_team"].str.replace("'","")
     all_results_cleaned["away_team"] = all_results_cleaned["away_team"].str.replace("'","")
+    #add the competition that we're getting it from
+    all_results_cleaned["competition"] = "Copa de la Liga"
+    all_results_cleaned["country_competition"] = "Argentina"
     return all_results_cleaned
 
 def get_team_stats(headers, URL):

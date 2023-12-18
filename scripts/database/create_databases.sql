@@ -50,16 +50,14 @@ create table if not exists team_value (
 		references team_keys (uuid)
 )
 
---downside is we duplicate matches, upside is query is easier
+
 create table if not exists fixture (
 	match_id serial primary key, --the sequential id
-	team_uuid varchar(36) not null, --team we're referring as main
-	opp_uuid varchar(36) not null, --team played against
-	goals_scored int not null, --goals for the main team
+	home_team_uuid varchar(36) not null, --team we're referring as main
+	away_team_uuid varchar(36) not null, --team played against
+	goals_home int not null, --goals for the main team
 	goals_against int not null, --goals against the team
-	match_day int not null,
-	match_month int not null,
-	match_year int not null,
+	match_day date not null,
 	competition varchar(36) not null, --national league, cup, libertadores, etc,
 	country_competition varchar(36) not null
 )

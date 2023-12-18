@@ -5,7 +5,7 @@ import os
 from scraper.scraper import get_the_fixture_and_results, get_team_stats
 from loader.to_cloud_storage import save_file_to_storage
 from loader.load_to_dwh import load_file_to_table
-from api import query_team_urls, query_team_aliases
+from api import query_team_urls, query_team_aliases, refresh_materialized_view
 #third-party
 import pandas as pd
 import requests
@@ -17,7 +17,11 @@ def apply_aliases_to_uuid(row, df_with_aliases):
     """
     team_uuids = df_with_aliases["uuid"].tolist()
     team_aliases = df_with_aliases["alias"].tolist()
-    print(team_aliases)
+    #flatten the list
+    team_aliases = [mini_list for sublist in team_aliases for mini_list in sublist]
+    #check if any of these values match with the TEAM NAME you're analyzing
+    #get the index of that matching
+
     return row
 
 #common variables we will use
@@ -33,21 +37,29 @@ today = pd.to_datetime('today').strftime('%Y-%m-%d')
 print("Scraping for FIXTURES.")
 fixtures = get_the_fixture_and_results(headers=headers, URL=URL)
 print(f"Succeeded.")
-#save this file
-FILENAME = f"FIXTURES|football-db|{today}.csv"
-#and now save this file to storage
-save_file_to_storage(bucket_name='football_llyn', file_path_to_upload=FILENAME, object_to_upload=fixtures)
 ##################
 #SAVE THE FIXTURE
 ##################
-#first of all query the team's aliases
+#now merge it to the fixtures dataframe.
 teams_aliases = query_team_aliases()
 #iterate over the UUIDs, get the possible aliases and see if there's a match.
-teams_aliases = teams_aliases.apply(apply_aliases_to_uuid, axis=1, args=(teams_aliases,))
-print(f"Saving the FIXTURE of TODAY...")
+#FIXME: There's definitely an improvement here. Maybe on the query side?
+fixtures_with_uuids = pd.merge(fixtures, teams_aliases, left_on=["home_team"], right_on=["team_name"], how='left')
+fixtures_with_uuids = fixtures_with_uuids.rename({"uuid":"home_team_uuid"}, axis=1)
+fixtures_with_uuids = fixtures_with_uuids.drop("team_name", axis=1)
+fixtures_with_uuids = pd.merge(fixtures_with_uuids, teams_aliases, left_on=["away_team"], right_on=["team_name"], how='left')
+fixtures_with_uuids = fixtures_with_uuids.rename({"uuid":"away_team_uuid"}, axis=1)
+fixtures_with_uuids = fixtures_with_uuids.drop("team_name", axis=1)
+#drop the columns we aren't going to use
+fixtures_with_uuids = fixtures_with_uuids.drop(["home_team","away_team"], axis=1)
+#save this file
 FILENAME = f"FIXTURES|football-db|{today}.csv"
+#and now save this file to storage
+print(f"Saving the FIXTURE of TODAY...")
+save_file_to_storage(bucket_name='football_llyn', file_path_to_upload=FILENAME, object_to_upload=fixtures_with_uuids)
+print(f"Loading the FIXTURE of TODAY...")
 load_file_to_table(bucket_name='football_llyn', name_of_file=FILENAME, 
-                   table_name="matches_played", drop_columns=True, cols_to_drop=["match_score"])
+                   table_name="fixture")
 print("Succeeded.")
 #get URLs to scrape for the TEAM STATS
 teams_urls_to_scrape = query_team_urls()
@@ -69,5 +81,9 @@ save_file_to_storage(bucket_name='football_llyn', file_path_to_upload=FILENAME, 
 ##################
 print(f"Saving the TEAM STATS of TODAY...")
 load_file_to_table(bucket_name='football_llyn', name_of_file=FILENAME, 
-                   table_name="team_stats", drop_columns=True, cols_to_drop=["team_name"])
+                   table_name="player_stats", drop_columns=True, cols_to_drop=["team_name"])
 print("Succeeded.")
+##################
+#UPDATE MATERIALIZED VIEWS
+##################
+refresh_materialized_view()

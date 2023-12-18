@@ -5,7 +5,7 @@ import psycopg2
 from psycopg2 import extras
 
 def load_file_to_table(bucket_name:str, name_of_file, table_name, 
-                       drop_columns:bool, cols_to_drop:list=None):
+                       drop_columns:bool=False, cols_to_drop:list=None):
     """
     Function to load to table TEAM_STATS today's file.
     """
