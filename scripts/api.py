@@ -71,7 +71,7 @@ def refresh_materialized_view():
     Queries to update the MATERIALIZED VIEW.
     """
     connection, cursor = connect_to_db()
-    query = "REFRESH MATERIALIZED VIEW updated_ranking_table;"
+    query = "REFRESH MATERIALIZED VIEW football_dwh.updated_ranking_table;"
     print("Refreshing MATERIALIZED VIEWS...")
     cursor.execute(query)
     connection.commit()
