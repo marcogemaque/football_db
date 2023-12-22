@@ -34,7 +34,7 @@ def query_team_urls():
     Queries the URLS to search for each team (with UUID).
     """
     connection, cursor = connect_to_db()
-    query = "SELECT * FROM football_dwh.scrape_urls left join football_dwh.team_keys using(uuid);"
+    query = "SELECT * FROM public.scrape_urls left join public.team_keys using(uuid);"
     team_urls_to_query = pd.read_sql_query(query, con=connection)
     return team_urls_to_query
 
@@ -44,7 +44,7 @@ def delete_all_data_from_table(table_name:str):
     """
     connection, cursor = connect_to_db()
     print(f"Deleting data from table {table_name}...")
-    query = f"delete from football_dwh.{table_name}"
+    query = f"delete from public.{table_name}"
     cursor.execute(query)
     connection.commit()
     print(f"Successful.")
@@ -54,7 +54,7 @@ def query_team_aliases():
     Queries the ALIASES for each team (with UUID)
     """
     connection, cursor = connect_to_db()
-    query = "SELECT * FROM football_dwh.teams_aliases left join football_dwh.team_keys using(uuid);"
+    query = "SELECT * FROM public.teams_aliases left join public.team_keys using(uuid);"
     team_urls_to_query = pd.read_sql_query(query, con=connection)
     team_uuids = team_urls_to_query["uuid"].tolist()
     team_aliases = team_urls_to_query["alias"].tolist()
@@ -71,7 +71,7 @@ def refresh_materialized_view():
     Queries to update the MATERIALIZED VIEW.
     """
     connection, cursor = connect_to_db()
-    query = "REFRESH MATERIALIZED VIEW football_dwh.updated_ranking_table;"
+    query = "REFRESH MATERIALIZED VIEW public.updated_ranking_table;"
     print("Refreshing MATERIALIZED VIEWS...")
     cursor.execute(query)
     connection.commit()
