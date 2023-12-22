@@ -28,7 +28,7 @@ def load_file_to_table(bucket_name:str, name_of_file, table_name,
     # Comma-separated dataframe columns
     cols = ','.join(list(df_to_load.columns))
     # SQL quert to execute
-    query  = "INSERT INTO %s(%s) VALUES %%s" % (f"football_dwh.{table_name}", cols)
+    query  = "INSERT INTO %s(%s) VALUES %%s" % (f"{table_name}", cols)
     cursor = conn.cursor()
     try:
         extras.execute_values(cursor, query, tuples)

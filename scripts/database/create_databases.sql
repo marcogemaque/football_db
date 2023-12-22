@@ -1,21 +1,21 @@
-create table if not exists football_dwh.team_keys (
+create table if not exists team_keys (
 	uuid varchar(36) primary key,
 	team_name varchar(200) not null,
 	country varchar(200) not null
 )
 
-create table if not exists football_dwh.scrape_urls (
-	uuid varchar(36) not null,
-	type_of_url varchar(99),
-	url text,
+create table if not exists teams_aliases (
+	uuid varchar(36),
+	alias text[],
 	primary key (uuid),
 	foreign key (uuid)
 		references team_keys (uuid)
 );
 
-create table if not exists teams_aliases (
-	uuid varchar(36),
-	alias text[],
+create table if not exists scrape_urls (
+	uuid varchar(36) not null,
+	type_of_url varchar(20) not null,
+	url text,
 	primary key (uuid),
 	foreign key (uuid)
 		references team_keys (uuid)
