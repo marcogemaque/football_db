@@ -54,7 +54,7 @@ def query_team_aliases():
     Queries the ALIASES for each team (with UUID)
     """
     connection, cursor = connect_to_db()
-    query = "SELECT * FROM teams_aliases left join team_keys using(uuid);"
+    query = "select * from pg_catalog.pg_tables;"#"SELECT * FROM teams_aliases left join team_keys using(uuid);"
     team_urls_to_query = pd.read_sql_query(query, con=connection)
     team_uuids = team_urls_to_query["uuid"].tolist()
     team_aliases = team_urls_to_query["alias"].tolist()
