@@ -20,7 +20,6 @@ insert into teams_aliases values
 ('95f521c9-7168-4c73-a414-46d2bc9eae14','{"RosarioCentral"}'),
 ('e077d7c8-5d12-41a7-800c-78c2b4b9da3e','{"CAUnión"}'),
 ('a68fb287-fdcc-4c0d-a1c9-35c4edfb5d90','{"GodoyCruz"}'),
-('1408c2b2-0e90-4e53-93aa-58dce85a5969','{"CentralCórdoba"}'),
 ('4fffd387-66d1-4c5c-9c61-6b7580497fb1','{"BarracasC."}'),
 ('d663673c-5351-4477-a502-d40270fbcd8f','{"CentralCórdoba"}'),
 ('4616271e-0fb1-4ea4-a8b6-6373e45c7df2','{"Platense"}'),
