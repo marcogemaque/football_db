@@ -1,22 +1,15 @@
 # **football_db**
-A pipeline built to scrape Brazil and Argentina league's results and stats and serve them into a dashboard.
+A pipeline built to scrape Brazil's and Argentina's leagues results and stats and serve them into a dashboard.
 
 ![logo](logo.jfif "Logo")
 
 # **Summary**
-<<<<<<< HEAD
 - Heroku hosted (and scheduled)
 - Scrapes **Transfermarkt** daily
 - Loads data to **Data Lake**
 - Inserts into database with constraints and QCs
 - Version controlled database for security
 - API built on Go for dashboard
-=======
-- Scrapes **Transfermarkt** daily
-- Loads data to **Data Lake**
-- Inserts into database with constraints and QCs
-- Go(lang) API
->>>>>>> 6490d311e466ae7dc1c16697d62c1b3eb174eb38
 
 # **Architechture and System Design**
 

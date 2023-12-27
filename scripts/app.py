@@ -2,6 +2,7 @@
 from time import sleep
 import os
 #our created libs
+from credentials_creator.security import create_credentials
 from scraper.scraper import get_the_fixture_and_results, get_team_stats
 from loader.to_cloud_storage import save_file_to_storage
 from loader.load_to_dwh import load_file_to_table
@@ -19,11 +20,10 @@ def apply_aliases_to_uuid(row, df_with_aliases):
     team_aliases = df_with_aliases["alias"].tolist()
     #flatten the list
     team_aliases = [mini_list for sublist in team_aliases for mini_list in sublist]
-    #check if any of these values match with the TEAM NAME you're analyzing
-    #get the index of that matching
-
     return row
 
+#create JSON
+create_credentials()
 #common variables we will use
 URL = "https://www.transfermarkt.co.uk/copa-de-la-liga-profesional-de-futbol/gesamtspielplan/wettbewerb/CDLP/saison_id/2022"
 #define the HEADER so we can escape TRANSFERMARKT's control
