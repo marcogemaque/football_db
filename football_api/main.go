@@ -3,9 +3,12 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -21,8 +24,10 @@ var db *sql.DB
 
 func main() {
 	var err error
+	//find the env secret
+	findEnvFile()
 	//create the psql pbject to connect to postgres
-	psqlInfo := "postgresql://cantuaria.marco1@gmail.com:rnZihcBHl1m6@ep-purple-term-a5pg9xu6.us-east-2.aws.neon.tech/neondb?sslmode=require"
+	psqlInfo := os.Getenv("psqlInfo")
 	db, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
@@ -31,11 +36,11 @@ func main() {
 	fmt.Println("Successfully connected")
 	//start our server
 	router := gin.Default()
-	router.GET("/fixtures", getFixture)
+	router.GET("/fixture", getFixture)
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"data": "hello_world"})
 	})
-	router.Run("localhost:8080")
+	router.Run("0.0.0.0:8080")
 }
 
 func getFixture(c *gin.Context) {
@@ -60,4 +65,11 @@ func getFixture(c *gin.Context) {
 		panic("Error associated to the query.")
 	}
 	c.JSON(http.StatusOK, all_fixtures)
+}
+
+func findEnvFile() {
+	err := godotenv.Load(".secrets/.env")
+	if err != nil {
+		log.Fatalf("Error loading .env file: %s", err)
+	}
 }
